@@ -45,3 +45,7 @@ Atualização: seção “Nossa história” com moldura de embalagem artesanal,
 
 - Logo e links Início retornam ao topo absoluto, com rolagem suave (ou sem animação se preferido).
 - Rodapé: Desenvolvedor Dev: Kayko.
+
+
+## Dados de entrega e retirada
+No botão **Meu pedido**, o cliente informa nome, telefone, escolhe delivery ou retirada, seleciona pagamento PIX/dinheiro e pode marcar que segue o Instagram para solicitar 10% de desconto. Para delivery, informa rua, número, bairro, cidade e, opcionalmente, CEP, complemento e referência. O botão **Enviar pedido** valida os campos e abre o WhatsApp com a mensagem preenchida. Esses dados pessoais não são armazenados no site, e o envio só acontece quando o cliente confirma no WhatsApp.

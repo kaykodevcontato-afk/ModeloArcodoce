@@ -165,18 +165,65 @@ document.getElementById('clear-cart').addEventListener('click', () => {
   showToast('Seu pedido foi limpo.');
 });
 
-// Apenas cria o texto do pedido e abre o contato oficial.
+// Dados pessoais não ficam salvos no navegador; são usados apenas na mensagem aberta no WhatsApp.
+const deliveryType = document.getElementById('delivery-type');
+const deliveryAddress = document.getElementById('delivery-address');
+const checkoutFields = ['customer-name','customer-phone','customer-cep','customer-neighborhood','customer-street','customer-number','customer-complement','customer-reference','customer-city','payment-method'];
+const field = id => document.getElementById(id);
+const value = id => field(id).value.trim();
+function updateDeliveryFields() {
+  const isDelivery = deliveryType.value === 'delivery';
+  deliveryAddress.hidden = !isDelivery;
+  for (const id of ['customer-neighborhood','customer-street','customer-number','customer-city']) {
+    field(id).required = isDelivery;
+  }
+}
+deliveryType.addEventListener('change', updateDeliveryFields);
+updateDeliveryFields();
+
+function validateCheckout() {
+  const required = ['customer-name', 'customer-phone'];
+  if (deliveryType.value === 'delivery') required.push('customer-neighborhood','customer-street','customer-number','customer-city');
+  for (const id of required) {
+    const el = field(id);
+    if (!el.value.trim()) { el.focus(); showToast('Preencha os campos obrigatórios para enviar o pedido.'); return false; }
+  }
+  const digits = value('customer-phone').replace(/\D/g, '');
+  if (digits.length < 10 || digits.length > 13) {
+    field('customer-phone').focus(); showToast('Confira o telefone com DDD.'); return false;
+  }
+  const cep = value('customer-cep').replace(/\D/g, '');
+  if (deliveryType.value === 'delivery' && cep && cep.length !== 8) {
+    field('customer-cep').focus(); showToast('Confira o CEP ou deixe o campo vazio.'); return false;
+  }
+  return true;
+}
+
+// Apenas monta a mensagem; o cliente confirma o envio no aplicativo do WhatsApp.
 sendCart.addEventListener('click', () => {
-  if (!totalUnits()) return;
+  if (!totalUnits() || !validateCheckout()) return;
   const lines = PRODUCTS.filter(p => cart[p.id]).map(p => `• ${cart[p.id]}x ${p.name}`);
+  const isDelivery = deliveryType.value === 'delivery';
   const note = noteField.value.trim();
   const message = [
     'Olá, Arco Doces! Gostaria de fazer este pedido:',
-    '',
-    ...lines,
-    '',
-    ...(note ? [`Observações: ${note}`, ''] : []),
-    'Podem me informar valores, disponibilidade e condições de entrega?'
+    '', '🍬 *SABORES*', ...lines,
+    '', '👤 *CLIENTE*',
+    `Nome: ${value('customer-name')}`,
+    `Telefone: ${value('customer-phone')}`,
+    '', isDelivery ? '🛵 *DELIVERY*' : '🏪 *RETIRADA NO LOCAL*',
+    ...(isDelivery ? [
+      `Endereço: ${value('customer-street')}, ${value('customer-number')}`,
+      `Bairro: ${value('customer-neighborhood')}`,
+      `Cidade: ${value('customer-city')}`,
+      ...(value('customer-cep') ? [`CEP: ${value('customer-cep')}`] : []),
+      ...(value('customer-complement') ? [`Complemento: ${value('customer-complement')}`] : []),
+      ...(value('customer-reference') ? [`Referência: ${value('customer-reference')}`] : [])
+    ] : ['Vou retirar no ponto de atendimento.']),
+    '', `💳 Pagamento: ${value('payment-method') === 'pix' ? 'PIX' : 'Dinheiro'}`,
+    ...(field('follow-instagram').checked ? ['📸 Sigo o Instagram e gostaria de solicitar o desconto de 10%.'] : []),
+    ...(note ? ['', `Observações: ${note}`] : []),
+    '', 'Por favor, confirmem o valor total, a disponibilidade e, se for delivery, a taxa e o prazo de entrega.'
   ].join('\n');
   const link = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
   window.open(link, '_blank', 'noopener,noreferrer');
