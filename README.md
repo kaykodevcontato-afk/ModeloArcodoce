@@ -33,3 +33,12 @@ Para atualizar o WhatsApp, troque `5587991286601` no `script.js` e nos links do 
 
 ## Atualização GitHub Pages
 Extraia o ZIP e envie **os arquivos da raiz do pacote** (index.html, style.css, script.js, README.md e pasta assets/) para a raiz do repositório. Substitua os antigos. O botão Meu pedido desaparece quando o rodapé está visível, evitando cobrir dados e crédito Dev: Kayko.
+
+Atualização: seção “Nossa história” com moldura de embalagem artesanal, destaque do responsável e identidade visual Arco Doces.
+
+
+## Atualização extra
+- Seção de localização com mapa incorporado e referência “em frente à Caixa Econômica Federal”.
+- Texto do endereço sem número visível, com o ponto correto marcado no mapa.
+- Destaque para delivery, desconto de 10% ao seguir o Instagram, e formas de pagamento: PIX e dinheiro.
+- Ícone do WhatsApp reforçado em links de contato e crédito “Dev: Kayko” linkado.
