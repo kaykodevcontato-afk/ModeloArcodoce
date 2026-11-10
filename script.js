@@ -207,3 +207,17 @@ if (footer && 'IntersectionObserver' in window) {
   }, { threshold: 0.08 });
   observer.observe(footer);
 }
+
+// Logo e links Início sempre retornam ao topo absoluto da página.
+document.querySelectorAll('a[href="#topo"]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, left: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+    // Fecha o menu mobile após clicar no início.
+    siteNav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menu');
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  });
+});

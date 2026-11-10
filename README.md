@@ -42,3 +42,6 @@ Atualização: seção “Nossa história” com moldura de embalagem artesanal,
 - Texto do endereço sem número visível, com o ponto correto marcado no mapa.
 - Destaque para delivery, desconto de 10% ao seguir o Instagram, e formas de pagamento: PIX e dinheiro.
 - Ícone do WhatsApp reforçado em links de contato e crédito “Dev: Kayko” linkado.
+
+- Logo e links Início retornam ao topo absoluto, com rolagem suave (ou sem animação se preferido).
+- Rodapé: Desenvolvedor Dev: Kayko.
